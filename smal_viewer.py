@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication
 import pyqt_viewer
 
+
 def main():
     qapp = QApplication([])
     main_window = pyqt_viewer.MainWindow()
@@ -8,6 +9,7 @@ def main():
     main_window.setWindowTitle("SMAL Model Viewer")
     main_window.show()
     qapp.exec_()
+
 
 if __name__ == '__main__':
     main()

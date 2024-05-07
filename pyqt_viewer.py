@@ -65,7 +65,7 @@ class MainWindow(QMainWindow):
         for idx, (label, com_slider) in enumerate(control_set):
             grid_layout.addWidget(label, idx, 0)
             grid_layout.addWidget(com_slider, idx, 1)
-        
+
         scrollAreaWidgetContents.setLayout(grid_layout)
 
         layout_region.addWidget(scrollArea)
@@ -108,7 +108,7 @@ class MainWindow(QMainWindow):
 
         show_toys_cb = QCheckBox('Show Toys', self)
         show_toys_cb.stateChanged.connect(partial(self.toggle_control, self.toy_frame))
-        
+
         shape_layout = self.get_layout_region(self.shape_controls)
         shape_layout.addWidget(reset_shape_pb)
         shape_layout.addWidget(show_toys_cb)
@@ -159,7 +159,7 @@ class MainWindow(QMainWindow):
             head_on_pb.clicked.connect(partial(self.set_known_pose, value))
             root_pose_layout.addWidget(head_on_pb, 0, idx)
             idx = idx + 1
-   
+
         pose_layout = QGridLayout()
         root_label, root_pose_sliders = self.pose_controls[0]
 
@@ -179,7 +179,7 @@ class MainWindow(QMainWindow):
 
         reset_trans_pb = QPushButton('Reset Translation')
         reset_trans_pb.clicked.connect(self.reset_trans)
-          
+
         # Add the translation slider
         trans_layout = QGridLayout()
         trans_layout.addWidget(trans_label, 0, 0)
@@ -204,7 +204,7 @@ class MainWindow(QMainWindow):
         export_image_pb = QPushButton('&Export Image')
         export_image_pb.clicked.connect(self.export_image)
 
-        misc_pbs_layout = QGridLayout() 
+        misc_pbs_layout = QGridLayout()
         misc_pbs_layout.addWidget(reset_pb, 0, 0)
         misc_pbs_layout.addWidget(export_image_pb, 0, 1)
         ctrl_layout.addLayout(misc_pbs_layout)
@@ -221,14 +221,14 @@ class MainWindow(QMainWindow):
         main_widget = QWidget()
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
-        
+
         # WINDOW
         self.window_title_stem = 'SMAL Model Viewer'
         self.setWindowTitle(self.window_title_stem)
-        
+
         self.statusBar().showMessage('Ready...')
         self.update_render()
-        
+
         self.showMaximized()
 
     def update_model(self, value):
@@ -251,7 +251,7 @@ class MainWindow(QMainWindow):
         with torch.no_grad():
             start = time.time()
             verts, joints, Rs, v_shaped = self.smal_model(
-                self.smal_params['betas'], 
+                self.smal_params['betas'],
                 torch.cat([self.smal_params['global_rotation'], self.smal_params['joint_rotations']], dim = 1))
 
             # normalize by center of mass
@@ -269,7 +269,7 @@ class MainWindow(QMainWindow):
             end = time.time()
             ellapsed = end - start
             print (f"Renderer Time: {ellapsed }")
-        
+
         self.image_np = rendered_images[0, :, :, :3]
         self.render_img_label.setPixmap(self.image_to_pixmap(self.image_np, DISPLAY_SIZE))
         self.render_img_label.update()
@@ -304,7 +304,7 @@ class MainWindow(QMainWindow):
     def toggle_control(self, layout):
         sender = self.sender()
         layout.setHidden(not sender.isChecked())
-            
+
     def set_known_pose(self, pose):
         label, root_pose_slider = self.pose_controls[0]
         root_pose_slider.setValue(pose)
