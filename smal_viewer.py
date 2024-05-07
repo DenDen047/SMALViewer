@@ -10,5 +10,6 @@ def main():
     main_window.show()
     qapp.exec_()
 
+
 if __name__ == '__main__':
     main()
