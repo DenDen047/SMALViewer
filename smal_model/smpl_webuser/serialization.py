@@ -29,6 +29,7 @@ from chumpy.ch import MatVecMult
 from .posemapper import posemap
 from .verts import verts_core
 
+
 def save_model(model, fname):
     m0 = model
     trainer_dict = {'v_template': np.asarray(m0.v_template),'J': np.asarray(m0.J),'weights': np.asarray(m0.weights),'kintree_table': m0.kintree_table,'f': m0.f, 'bs_type': m0.bs_type, 'posedirs': np.asarray(m0.posedirs)}
@@ -77,7 +78,12 @@ def backwards_compatibility_replacements(dd):
 def ready_arguments(fname_or_dict):
 
     if not isinstance(fname_or_dict, dict):
-        dd = pickle.load(open(fname_or_dict))
+        with open(fname_or_dict, 'rb') as f:
+            u = pickle._Unpickler(f)
+            u.encoding = 'latin1'
+            dd = u.load()
+        # with open(fname_or_dict, 'rb') as f:
+        #     dd = pickle.load(f)
     else:
         dd = fname_or_dict
 
